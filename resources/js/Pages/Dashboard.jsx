@@ -14,14 +14,14 @@ export default function Dashboard({auth}) {
             <div className="py-5 px-2 flex flex-col gap-y-3">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">Saldo kamu sebesar {rupiah(1000000)}</div>
+                        <div className="p-6 text-gray-900 dark:text-gray-100">Saldo kamu sebesar {rupiah(auth.user.wallet?.wallet ?? 0)}</div>
                     </div>
                 </div>
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                         <div className={'p-6 flex flex-row gap-3 items-center justify-between'}>
-                            <div className="text-gray-900 dark:text-gray-100">5 Planing</div>
-                            <Link href={route('plan')}><PrimaryButton
+                            <div className="text-gray-900 dark:text-gray-100">{auth.user.plans.length} Planing</div>
+                            <Link href={route('plan.index')}><PrimaryButton
                                 className={'w-fit h-fit'}>Lihat</PrimaryButton></Link>
                         </div>
                     </div>
@@ -29,8 +29,8 @@ export default function Dashboard({auth}) {
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                         <div className={'p-6 flex flex-row gap-3 items-center justify-between'}>
-                            <div className="text-gray-900 dark:text-gray-100">10 Transaksi</div>
-                            <Link href={route('transaction')}><PrimaryButton
+                            <div className="text-gray-900 dark:text-gray-100">{auth.user.transactions.length} Transaksi</div>
+                            <Link href={route('transaction.index')}><PrimaryButton
                                 className={'w-fit h-fit'}>Lihat</PrimaryButton></Link>
                         </div>
                     </div>

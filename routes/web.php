@@ -19,8 +19,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/plan', [\App\Http\Controllers\PlanController::class, 'index'])->name('plan');
-    Route::get('/transaction', [\App\Http\Controllers\TransactionController::class, 'index'])->name('transaction');
+    Route::resource('/plan', \App\Http\Controllers\PlanController::class);
+    Route::resource('/transaction', \App\Http\Controllers\TransactionController::class);
 });
 
 

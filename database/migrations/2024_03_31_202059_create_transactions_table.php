@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('money');
+            $table->string('status');
             $table->foreignId('user_id')->constrained()->nullOnDelete();
             $table->timestamps();
         });

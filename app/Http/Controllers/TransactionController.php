@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionRequest;
+use App\Models\Plan;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class TransactionController extends Controller
@@ -13,9 +18,21 @@ class TransactionController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $transactions = Transaction::all();
+        $user = Auth::user();
+
+        $transactions = $user->transactions()
+            ->whereMonth('updated_at', now()->month)
+            ->whereYear('updated_at', now()->year)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $plans = Plan::query()->whereMonth('updated_at', now()->month)
+            ->whereYear('updated_at', now()->year)
+            ->get();
+
         return Inertia::render('Transaction', [
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'plans' => $plans
         ]);
     }
 
@@ -30,9 +47,31 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TransactionRequest $request): \Illuminate\Http\RedirectResponse
     {
-        //
+        $user = Auth::user();
+        $userId = $user->id;
+
+        $request->merge(['user_id' => $userId]);
+
+        if ($request->input('status') == 'in') {
+            $user->wallet()->update([
+                'wallet' => $user->wallet->wallet + $request->input('money')
+            ]);
+        }
+
+        if ($request->input('status') == 'out') {
+            if ($user->wallet->wallet <= 0 || $user->wallet->wallet < $request->input('money')) {
+                return Redirect::route('transaction.index')->with('error', 'Jumlah saldo tidak mencukupi!');
+            }
+            $user->wallet()->update([
+                'wallet' => $user->wallet->wallet - $request->input('money')
+            ]);
+        }
+
+        Transaction::query()->create($request->all());
+
+        return Redirect::route('transaction.index');
     }
 
     /**
@@ -54,7 +93,7 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
         //
     }

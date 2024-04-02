@@ -18,11 +18,11 @@ class UserSeeder extends Seeder
             'name' => 'Bariq Firjatullah',
             'email' => 'bariqfirjatullah1803@gmail.com',
             'password' => Hash::make('aku089619')
-        ]);
+        ])->wallet()->create();
         User::query()->create([
             'name' => 'Sefprina Sulisiani',
             'email' => 'sefprinaana@gmail.com',
             'password' => Hash::make('sefprina123')
-        ]);
+        ])->wallet()->create();
     }
 }

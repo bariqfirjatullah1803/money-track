@@ -6,6 +6,7 @@ use App\Http\Requests\PlanRequest;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PlanController extends Controller
@@ -15,7 +16,12 @@ class PlanController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $plans = Auth::user()->plans()->get();
+        $user = Auth::user();
+
+        $plans = $user->plans()
+            ->whereMonth('updated_at', now()->month)
+            ->whereYear('updated_at', now()->year)
+            ->get();
 
         return Inertia::render('Plan', [
             'plans' => $plans
@@ -33,9 +39,13 @@ class PlanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PlanRequest $request)
+    public function store(PlanRequest $request): \Illuminate\Http\RedirectResponse
     {
-        //
+        $userId = Auth::id();
+        $request->merge(['user_id' => $userId]);
+
+        Plan::query()->create($request->all());
+        return Redirect::route('plan.index');
     }
 
     /**
