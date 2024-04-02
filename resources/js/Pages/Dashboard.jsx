@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head} from '@inertiajs/react';
+import {Head, Link} from '@inertiajs/react';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {rupiah} from "@/Utils/MoneyFormat.js";
 
@@ -21,7 +21,8 @@ export default function Dashboard({auth}) {
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                         <div className={'p-6 flex flex-row gap-3 items-center justify-between'}>
                             <div className="text-gray-900 dark:text-gray-100">5 Planing</div>
-                            <PrimaryButton className={'w-fit h-fit'}>Lihat</PrimaryButton>
+                            <Link href={route('plan')}><PrimaryButton
+                                className={'w-fit h-fit'}>Lihat</PrimaryButton></Link>
                         </div>
                     </div>
                 </div>
@@ -29,7 +30,8 @@ export default function Dashboard({auth}) {
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                         <div className={'p-6 flex flex-row gap-3 items-center justify-between'}>
                             <div className="text-gray-900 dark:text-gray-100">10 Transaksi</div>
-                            <PrimaryButton className={'w-fit h-fit'}>Lihat</PrimaryButton>
+                            <Link href={route('transaction')}><PrimaryButton
+                                className={'w-fit h-fit'}>Lihat</PrimaryButton></Link>
                         </div>
                     </div>
                 </div>

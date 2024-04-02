@@ -18,4 +18,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/plan', [\App\Http\Controllers\PlanController::class, 'index'])->name('plan');
+    Route::get('/transaction', [\App\Http\Controllers\TransactionController::class, 'index'])->name('transaction');
+});
+
+
 require __DIR__ . '/auth.php';

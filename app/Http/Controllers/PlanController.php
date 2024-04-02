@@ -6,23 +6,28 @@ use App\Http\Requests\PlanRequest;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class PlanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $plans = Auth::user()->plans()->get();
+
+        return Inertia::render('Plan', [
+            'plans' => $plans
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Inertia\Response
     {
-        //
+        return Inertia::render('Plan/Create');
     }
 
     /**
@@ -44,9 +49,9 @@ class PlanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Plan $plan)
+    public function edit(Plan $plan): \Inertia\Response
     {
-        //
+        return Inertia::render('Plan/Edit');
     }
 
     /**

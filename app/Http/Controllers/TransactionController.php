@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
-        //
+        $transactions = Transaction::all();
+        return Inertia::render('Transaction', [
+            'transactions' => $transactions
+        ]);
     }
 
     /**
