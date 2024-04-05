@@ -11,6 +11,7 @@ import SecondaryButton from "@/Components/SecondaryButton.jsx";
 import DangerButton from "@/Components/DangerButton.jsx";
 import Modal from "@/Components/Modal.jsx";
 import {formatDateTime} from "@/Utils/DateFormat.js";
+import Card from "@/Components/Card.jsx";
 
 export default function Plan({auth, plans}) {
     const [addModal, setAddModal] = useState(false)
@@ -56,27 +57,25 @@ export default function Plan({auth, plans}) {
                 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Plan</h2>}>
             <Head title="Plan"/>
 
-            <div className="py-5 px-2 flex flex-col gap-y-3">
-                <div className={'w-full mx-auto sm:px-6 lg:px-8 flex justify-between items-center'}>
+            <div className="py-5 flex flex-col gap-y-3">
+                <div className={'w-full mx-auto flex justify-between items-center'}>
                     <a href={route('dashboard')}
                        className={'text-sm text-gray-100 flex items-center justify-center gap-1'}><FaArrowLeftLong/> Kembali</a>
                     <PrimaryButton className={'w-fit h-fit'} onClick={showModal}>Tambah</PrimaryButton>
                 </div>
                 {plans && plans.map((item, index) =>
-                    <div key={index} className="w-full mx-auto sm:px-6 lg:px-8">
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
-                            <div className={'p-6 flex flex-col gap-1'}>
-                                <div className={'flex flex-row items-center justify-between'}>
-                                    <div className="text-gray-900 dark:text-gray-100">{item.name}</div>
-                                    <div className="text-gray-900 dark:text-gray-100">{rupiah(item.money)}</div>
-                                </div>
-                                <div className={'flex flex-row items-center justify-between'}>
-                                    <p className={'dark:text-gray-100 text-sm'}>{item.description}</p>
-                                    <p className={'dark:text-gray-100 text-sm'}>{formatDateTime(item.updated_at)}</p>
-                                </div>
+                    <Card key={'index'}>
+                        <div className={'p-6 flex flex-col gap-1'}>
+                            <div className={'flex flex-row items-center justify-between'}>
+                                <div className="text-gray-900 dark:text-gray-100">{item.name}</div>
+                                <div className="text-gray-900 dark:text-gray-100">{rupiah(item.money)}</div>
+                            </div>
+                            <div className={'flex flex-row items-center justify-between'}>
+                                <p className={'dark:text-gray-100 text-sm'}>{item.description}</p>
+                                <p className={'dark:text-gray-100 text-sm'}>{formatDateTime(item.updated_at)}</p>
                             </div>
                         </div>
-                    </div>
+                    </Card>
                 )}
             </div>
 

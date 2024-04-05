@@ -1,0 +1,1 @@
+import{j as e}from"./app-Bm3w0RM1.js";const n=r=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR"}).format(r);function o({children:r,className:a,...s}){return e.jsx("div",{className:"w-full mx-auto",...s,children:e.jsx("div",{className:"bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg "+a,children:r})})}export{o as C,n as r};

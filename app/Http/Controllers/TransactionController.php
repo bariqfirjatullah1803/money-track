@@ -95,7 +95,29 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction)
     {
-        //
+        $user = Auth::user();
+        $userId = $user->id;
+
+        $request->merge(['user_id' => $userId]);
+
+        if ($request->input('status') == 'in') {
+            $user->wallet()->update([
+                'wallet' => $user->wallet->wallet + $request->input('money')
+            ]);
+        }
+
+        if ($request->input('status') == 'out') {
+            if ($user->wallet->wallet <= 0 || $user->wallet->wallet < $request->input('money')) {
+                return Redirect::route('transaction.index')->with('error', 'Jumlah saldo tidak mencukupi!');
+            }
+            $user->wallet()->update([
+                'wallet' => $user->wallet->wallet - $request->input('money')
+            ]);
+        }
+
+        $transaction->update($request->all());
+
+        return Redirect::route('transaction.index');
     }
 
     /**
@@ -103,6 +125,15 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $user = Auth::user();
+        $userId = $user->id;
+
+        if ($transaction->status == 'in') $user->wallet()->update(['wallet' => $user->wallet->wallet - $transaction->money]);
+
+        if ($transaction->status == 'out') $user->wallet()->update(['wallet' => $user->wallet->wallet + $transaction->money]);
+
+        $transaction->delete();
+
+        return Redirect::route('transaction.index');
     }
 }
